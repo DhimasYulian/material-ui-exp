@@ -6,11 +6,12 @@ import cx from 'classnames'
 import style from './Card.module.css'
 
 const MyCard = () => {
-    const { data, isLoading } = useContext(AppContext)
-    const { confirmed, recovered, deaths, lastUpdate } = data;
+    const { data } = useContext(AppContext)
+    const { confirmed, recovered, deaths, lastUpdate } = data
+
     return (
         <>
-            {isLoading ? <h2>Loading...</h2> : (
+            {!confirmed ? <h2>Loading...</h2> : (
                 <div className={style.container}>
                     <Grid container spacing={3} justifiy="center">
                         <Grid item component={Card} xs={12} md={3} className={cx(style.card, style.infected)}>

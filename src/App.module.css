@@ -4,3 +4,9 @@
     justify-content: center;
     flex-direction: column;
 }
+
+@media (max-width: 770px) {
+    .container {
+        margin: 0 10%;
+    }
+}

@@ -7,18 +7,29 @@ export const AppProvider = (props) => {
     const [data, setData] = useState([])
     const [dailyData, setDailyData] = useState([])
     const [allcountries, setCountries] = useState([])
+    const [country, setCountry] = useState("")
     const [isLoading, setLoading] = useState(true);
     const endpoints = 'https://covid19.mathdro.id/api'
+
     useEffect(() => {
-        const fetchData = async () => {
+        let changeableUrl = endpoints;
+        const fetchData = async (country) => {
+            setLoading(true)
+            if (country) {
+                changeableUrl = `${endpoints}/countries/${country}`
+            }
             try {
-                const response = await axios.get(endpoints)
+                const response = await axios.get(changeableUrl)
                 setData(response.data)
             } catch (error) {
                 console.log(error)
             }
             setLoading(false)
         }
+        fetchData(country);
+    }, [country])
+
+    useEffect(() => {
         const fetchDailyData = async () => {
             try {
                 const { data } = await axios.get(`${endpoints}/daily`)
@@ -33,8 +44,6 @@ export const AppProvider = (props) => {
             }
             setLoading(false)
         }
-
-        fetchData();
         fetchDailyData();
     }, [])
 
@@ -49,14 +58,15 @@ export const AppProvider = (props) => {
             setLoading(false)
         }
         fetchCountries()
-
-    }, [setCountries])
+    }, [])
 
     const appData = {
         data,
         allcountries,
+        country,
         dailyData,
-        isLoading
+        isLoading,
+        setCountry
     }
     return (
         <AppContext.Provider value={appData}>
